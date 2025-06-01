@@ -37,60 +37,74 @@
     </div>
   </div>
 
-  <!-- Modal Script (runs after DOM is loaded) -->
-<!-- Include confetti library -->
-<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <!-- Two Test Buttons -->
+  <button id="winBtn">Show Win Modal</button>
+  <button id="loseBtn">Show Lose Modal</button>
 
-<script>
-  const modal = document.getElementById('myModal');
-  const modalTitle = document.getElementById('modalTitle');
-  const modalMessage = document.getElementById('modalMessage');
-  const showBtn = document.getElementById('showModalBtn');
-  const closeBtn = document.getElementById('closeModalBtn');
+  <!-- Modal -->
+  <div class="modal" id="myModal">
+    <div class="modal-content">
+      <span class="close-button" id="closeModalBtn">&times;</span>
+      <h2 id="modalTitle">Game Over</h2>
+      <p id="modalMessage">Would you like to play again or go home?</p>
+      <button onclick="location.reload()">Play Again</button>
+      <button onclick="window.location.href='index.html'">Back to Home</button>
+    </div>
+  </div>
 
-  function showGameResult(result) {
-    modal.style.display = 'flex';
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <script>
+    const modal = document.getElementById('myModal');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalMessage = document.getElementById('modalMessage');
+    const closeBtn = document.getElementById('closeModalBtn');
+    const winBtn = document.getElementById('winBtn');
+    const loseBtn = document.getElementById('loseBtn');
 
-    if (result === 'win') {
-      modalTitle.textContent = '🎉 You Win!';
-      modalMessage.textContent = 'Play again or return home?';
+    function showGameResult(result) {
+      modal.style.display = 'flex';
 
-      // Fire multiple confetti bursts
-      const duration = 2 * 1000;
-      const end = Date.now() + duration;
+      if (result === 'win') {
+        modalTitle.textContent = '🎉 You Win!';
+        modalMessage.textContent = 'Play again or return home?';
 
-      const interval = setInterval(() => {
-        if (Date.now() > end) return clearInterval(interval);
-        confetti({
-          particleCount: 50,
-          spread: 60,
-          origin: { x: Math.random(), y: Math.random() - 0.2 }
-        });
-      }, 200);
+        const duration = 2 * 1000;
+        const end = Date.now() + duration;
 
-    } else {
-      modalTitle.textContent = '😞 You Lose!';
-      modalMessage.textContent = 'Try again or return home?';
+        const interval = setInterval(() => {
+          if (Date.now() > end) return clearInterval(interval);
+          confetti({
+            particleCount: 50,
+            spread: 60,
+            origin: { x: Math.random(), y: Math.random() - 0.2 }
+          });
+        }, 200);
+      } else {
+        modalTitle.textContent = '😞 You Lose!';
+        modalMessage.textContent = 'Try again or return home?';
+      }
     }
-  }
 
-  // Test Button - just show win for demo
-  showBtn.addEventListener('click', () => {
-    showGameResult('win'); // Change to 'lose' to test
-  });
+    winBtn.addEventListener('click', () => {
+      showGameResult('win');
+    });
 
-  closeBtn.addEventListener('click', () => {
-    modal.style.display = 'none';
-  });
+    loseBtn.addEventListener('click', () => {
+      showGameResult('lose');
+    });
 
-  window.addEventListener('click', (e) => {
-    if (e.target === modal) {
+    closeBtn.addEventListener('click', () => {
       modal.style.display = 'none';
-    }
-  });
-</script>
-  <!-- Other scripts -->
+    });
+
+    window.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        modal.style.display = 'none';
+      }
+    });
+  </script>
+
   <script src="assets/scripts/main.js" type="module"></script>
 </body>
-</html>
 
